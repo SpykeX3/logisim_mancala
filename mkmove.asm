@@ -4,6 +4,7 @@ addsp 240
 
 ldi r0, 0xf1
 jsr mkmove
+ldi r0, 13
 
 halt
 
@@ -14,9 +15,7 @@ push r1
 push r2
 push r3
 push r0
-ldi r3, 13##
 move r0, r2
-st r2, r3 ######
 ldi r0, 0
 ld r2, r1 #сохраняем колличество семян в ячейке
 st r2, r0 #зануляем ячейку откуда взяли семяна
@@ -99,6 +98,7 @@ else
 	pop r3
 	pop r2
 	pop r1
+	pop r0
 	ldi r0, 0
 	fi
 rts
