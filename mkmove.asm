@@ -4,7 +4,6 @@ addsp 240
 
 ldi r0, 0xf1
 jsr mkmove
-ldi r0, 13
 
 halt
 
