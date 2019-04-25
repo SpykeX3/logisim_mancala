@@ -1,10 +1,4 @@
 asect 0
-addsp 240
-ldi r0, Strategy
-ldi r1,0xC1
-jsr pgcall
-halt
-
 Strategy:
 
 push r1
@@ -19,15 +13,15 @@ while
 stays nz
 	ld r1, r2   # r2 = number of seeds in r1
 	ldi r3, 13
-	   while        ## this cycle find remainder of the division
+	   while        ## this cycle finds remainder of the division
 		cmp r2, r3  #
 	   stays pl     #
 		sub r3, r2  #
 		not r2      #
 	   wend         #
 	add r1, r2   # r2 = address of end after move ( correct only if move and on bot's field)
-	if 
-		cmp r2, r0 # 
+	if
+		cmp r2, r0 #
 	is z           #
 		move r1, r0#
 		pop r3     #
@@ -45,16 +39,16 @@ ldi r0, 0xff
 while
 	cmp r0, r1
 stays nz
-	ld r1, r2 #r2 = number of seeds in current sell
-	if 
+	ld r1, r2 #r2 = number of seeds in current cell
+	if
 	tst r2 	## check there is no zero in current cell
 	is nz
 	ldi r3, 13
 	if          #
-	cmp r3, r2  # check we don't have a loops 
+	cmp r3, r2  # check we don't have a loops
 	is pl       #
 	add r1, r2#r2 = address of destination cell
-	if 
+	if
 	cmp r0, r2 ## check we stop in our field
 	is pl
 		ld r2, r3 #r3 = number of seeds in destination cell
@@ -66,7 +60,7 @@ stays nz
 			sub r0, r2   # r3 = numlber of seeds in opposite cell
 			add r1, r2   # r2 = address of opposite cell
 			ld r2, r3    #
-			if  ## check there is zero in destination sell
+			if  ## check there is zero in destination cell
 			tst r3
 			is nz
 			pop r0
@@ -77,12 +71,12 @@ stays nz
 		fi
 		pop r1
 		fi
-		fi	
-			
+		fi
+
 	fi
 	fi
 	inc r1
-wend	
+wend
 
 
 ##part 3
@@ -96,7 +90,7 @@ ld r0, r1
 ldi r2, 6
 sub r2, r1
 move r1, r3
-	
+
 while     #
 cmp r1, r2#
 stays z   #
@@ -111,7 +105,7 @@ push r0
 while
 	tst r1 #if yes, this cell is chosen, the loop is over
 stays lt
-	
+
 	if
 		cmp r1, r3 #if no, we check which cell allows to keep the most of seeds
 	is gt
@@ -119,7 +113,7 @@ stays lt
 		pop r1 	#update the adress if needed (stored on stack)
 		push r0
 	fi
-	dec r2 
+	dec r2
 	if	#if it's the sixth cell, break the loop
 			tst r2
 		is z
@@ -131,7 +125,7 @@ stays lt
 		fi
 	inc r0 #move to the next cell
 	ld r0, r1
-	sub r2, r1		
+	sub r2, r1
 	while      #
 	cmp r1, r2 #
 	stays z    #
@@ -146,11 +140,11 @@ stays lt
 	sub r2, r1 #
 	wend       #
 wend
-if 
+if
 tst r2
 is nz
 pop r1
-else 
+else
 pop r0
 fi
 pop r3
@@ -164,7 +158,7 @@ push r2 # save r2,r3
 push r3
 ldi r2, 0
 ld r2, r3 # r3 = caller page number
-st r2, r1 # 
+st r2, r1 #
 move r3,r1
 pop r3 # restore r3,r2
 pop r2
