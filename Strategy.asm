@@ -80,73 +80,44 @@ wend
 
 
 ##part 3
-#initialization and check for the first cell
-ldi r0, 0
-ldi r1, 0
-ldi r2, 0
-ldi r3, 0
+##initialization for the loop
 ldi r0, 0xf9
-ld r0, r1
 ldi r2, 6
-sub r2, r1
-move r1, r3
-
-while     #
-cmp r1, r2#
-stays z   #
-dec r2    #find not empty cell
-inc r0    #
-ld r0, r1 #
-sub r2, r1#
-wend
-move r1, r3
+ldi r3, -50
 push r0
-	#the loop checks whether all seeds remain on the computer's side
-while
-	tst r1 #if yes, this cell is chosen, the loop is over
-stays lt
 
+while
+ 	tst r2 ##while we are not on the mancala
+stays nz
+	ld r0, r1
 	if
-		cmp r1, r3 #if no, we check which cell allows to keep the most of seeds
+		tst r1 ##check for an empty (zero) cell 
+	is z
+		inc r0
+		dec r2
+		continue
+	fi
+	sub r2, r1
+	if 
+		tst r1 ##if all seeds will remain on the computer's side, break the loop
+	is z
+		pop r1 ##we don't need the adress from stack anymore, so we just clear it somewhere
+		pop r3
+		pop r2
+		pop r1
+		br pgret
+	fi
+	if 
+		cmp r1, r3 ##if the current move let more seeds remain on the computer's side, update the adress (stored on stack) 
 	is gt
 		move r1, r3
-		pop r1 	#update the adress if needed (stored on stack)
+		pop r1
 		push r0
 	fi
+	inc r0
 	dec r2
-	if	#if it's the sixth cell, break the loop
-			tst r2
-		is z
-			pop r0
-			pop r3
-			pop r2
-			pop r1
-			br pgret
-		fi
-	inc r0 #move to the next cell
-	ld r0, r1
-	sub r2, r1
-	while      #
-	cmp r1, r2 #
-	stays z    #
-	if         #
-	tst r2     #
-	is z       #
-	break      # move to fill cell
-	fi         # where if condition check we didn't come on mancala
-	dec r2     #
-	inc r0     #
-	ld r0, r1  #
-	sub r2, r1 #
-	wend       #
 wend
-if
-tst r2
-is nz
-pop r1
-else
-pop r0
-fi
+pop r0	## if the full loop was executed, take the adress to r0 from stack
 pop r3
 pop r2
 pop r1
